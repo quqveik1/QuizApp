@@ -5,11 +5,10 @@ import retrofit2.http.Body
 import retrofit2.http.Headers
 import retrofit2.http.POST
 
-interface GenerateQuizName {
-
+interface CallGPT {
     @Headers("Authorization: Bearer $OPENAIKEY")
     @POST("/v1/chat/completions")
-    fun generateNames(@Body requestBody: ChatRequest): Call<ChatResponse>
+    fun callGPT(@Body requestBody: ChatRequest): Call<ChatResponse>
 }
 
 data class ChatRequest(

@@ -24,4 +24,5 @@ class HomeButtonAdapter(private var data: List<String>) : RecyclerView.Adapter<H
         notifyDataSetChanged()
 
     }
+
 }

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="quiz_topics">
+        <item>Физика</item>
+        <item>Математика</item>
+        <item>История</item>
+        <item>География</item>
+        <item>Биология</item>
+        <item>Музыка</item>
+        <item>Искусство</item>
+        <item>Кинематограф</item>
+        <item>Литература</item>
+        <item>Астрономия</item>
+        <item>Психология</item>
+        <item>Спорт</item>
+        <item>Кулинария</item>
+        <item>Архитектура</item>
+        <item>Технологии</item>
+        <item>Мода</item>
+        <item>Автомобили</item>
+        <item>Компьютерные игры</item>
+        <item>Философия</item>
+        <item>Мифология</item>
+    </string-array>
+</resources>

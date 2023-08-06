@@ -10,5 +10,15 @@
         android:name="com.kurlic.quizapp.home.HomeFragment"
         android:label="MainFragment"
         tools:layout="@layout/home_fragment">
+        <action
+            android:id="@+id/action_HomeFragment_to_GameFragment"
+            app:destination="@id/GameFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/GameFragment"
+        android:name="com.kurlic.quizapp.game.GameFragment"
+        android:label="MainFragment"
+        tools:layout="@layout/game_fragment">
     </fragment>
 </navigation>
