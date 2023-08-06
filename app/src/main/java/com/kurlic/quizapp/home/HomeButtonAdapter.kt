@@ -1,9 +1,10 @@
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.kurlic.quizapp.R
 
-class HomeButtonAdapter(private val data: List<String>) : RecyclerView.Adapter<HomeButtonItemViewHolder>() {
+class HomeButtonAdapter(private var data: List<String>) : RecyclerView.Adapter<HomeButtonItemViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeButtonItemViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
@@ -17,4 +18,10 @@ class HomeButtonAdapter(private val data: List<String>) : RecyclerView.Adapter<H
     }
 
     override fun getItemCount(): Int = data.size
+    @SuppressLint("NotifyDataSetChanged")
+    fun updateData(newData: List<String>) {
+        data = newData
+        notifyDataSetChanged()
+
+    }
 }
