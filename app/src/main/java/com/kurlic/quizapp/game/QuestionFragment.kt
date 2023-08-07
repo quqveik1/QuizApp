@@ -1,5 +1,12 @@
 package com.kurlic.quizapp.game
 
+import android.content.res.ColorStateList
+import android.graphics.BlendMode
+import android.graphics.BlendModeColorFilter
+import android.graphics.Color
+import android.graphics.PorterDuff
+import android.graphics.drawable.GradientDrawable
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -8,9 +15,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.kurlic.quizapp.R
 
+@Suppress("DEPRECATION")
 class QuestionFragment : Fragment() {
 
     private lateinit var question: QuizQuestion
@@ -52,16 +61,18 @@ class QuestionFragment : Fragment() {
         return rootview
     }
 
+    private val answerDelay = 2000L
+
     private fun setButtons()
     {
         for (i in 0 until buttonList.size)
         {
             buttonList[i].text = question.answers[i]
             buttonList[i].setOnClickListener {
+                highlightButtons()
                 Handler(Looper.getMainLooper()).postDelayed({
                     questionAnswerCallBack?.onQuestionAnswered(question.correctAnswerIndex == i)
-                }, 2000)
-                highlightButtons()}
+                }, answerDelay)}
         }
     }
 
@@ -69,8 +80,13 @@ class QuestionFragment : Fragment() {
     {
         for (i in 0 until buttonList.size)
         {
-            val color = if(question.correctAnswerIndex == i) requireContext().getColor(R.color.trueColor) else requireContext().getColor(R.color.falseColor)
-            buttonList[i].setBackgroundColor(color)
+            val colorResource = if(question.correctAnswerIndex == i) R.color.trueColor else R.color.falseColor
+            val color = ContextCompat.getColor(requireContext(), colorResource)
+
+            val colorStateList = ColorStateList.valueOf(color)
+            buttonList[i].backgroundTintList = colorStateList
+
+
         }
     }
 

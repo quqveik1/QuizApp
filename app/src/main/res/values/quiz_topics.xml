@@ -1,25 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="quiz_topics">
-        <item>Физика</item>
-        <item>Математика</item>
-        <item>История</item>
-        <item>География</item>
-        <item>Биология</item>
+    <string-array name="entertainment_topics">
         <item>Музыка</item>
         <item>Искусство</item>
         <item>Кинематограф</item>
         <item>Литература</item>
-        <item>Астрономия</item>
         <item>Психология</item>
         <item>Спорт</item>
         <item>Кулинария</item>
-        <item>Архитектура</item>
-        <item>Технологии</item>
         <item>Мода</item>
         <item>Автомобили</item>
         <item>Компьютерные игры</item>
         <item>Философия</item>
         <item>Мифология</item>
+    </string-array>
+
+    <string-array name="academic_topics">
+        <item>Физика</item>
+        <item>Математика</item>
+        <item>История</item>
+        <item>География</item>
+        <item>Биология</item>
+        <item>Астрономия</item>
+        <item>Технологии</item>
+        <item>Архитектура</item>
+    </string-array>
+
+    <string-array name="quiz_topics">
+        <item>Музыка</item>
+        <item>Искусство</item>
+        <item>Кинематограф</item>
+        <item>Литература</item>
+        <item>Психология</item>
+        <item>Спорт</item>
+        <item>Кулинария</item>
+        <item>Мода</item>
+        <item>Автомобили</item>
+        <item>Компьютерные игры</item>
+        <item>Философия</item>
+        <item>Мифология</item>
+        <item>Физика</item>
+        <item>Математика</item>
+        <item>История</item>
+        <item>География</item>
+        <item>Биология</item>
+        <item>Астрономия</item>
+        <item>Технологии</item>
+        <item>Архитектура</item>
     </string-array>
 </resources>
