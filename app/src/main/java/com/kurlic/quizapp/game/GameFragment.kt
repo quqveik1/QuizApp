@@ -1,6 +1,7 @@
 package com.kurlic.quizapp.game
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -60,7 +61,7 @@ class GameFragment : Fragment() {
         tv.text = gameName
     }
 
-    private val questionsLen = 3
+    private val questionsLen = 2
     var activeQuestion = 0
         set(value) {
             field = value
@@ -76,7 +77,60 @@ class GameFragment : Fragment() {
 
     private fun getQuestions()
     {
-        val message = Message("system", "Сгенирируй $questionsLen интересных вопросов по теме \"$gameName\". Ответ должен быть возвращен в формате валидного массива размером $questionsLen json {\n" +
+        getServerQuestions()
+    }
+
+    private fun getServerQuestions()
+    {
+        val call = MainActivity.createServerApi().getDefaultQuestions(gameName, questionsLen)
+
+        call.enqueue(object : Callback<List<String>>{
+            override fun onResponse(
+                call: Call<List<String>>,
+                response: Response<List<String>>
+            )
+            {
+                if(!response.isSuccessful)
+                {
+                    getServerQuestions()
+                    Toast.makeText(context, "???" + response.message(), Toast.LENGTH_SHORT).show()
+                    Log.e("???", response.message()!!);
+                    return
+                }
+
+                val list = response.body()
+
+                if(list == null)
+                {
+                    getServerQuestions()
+                    return
+                }
+
+                val gson = Gson()
+
+                for(s in list)
+                {
+                    val obj = gson.fromJson(s, QuizQuestion::class.java)
+
+                    questions.add(obj)
+                }
+
+                startQuiz()
+            }
+
+            override fun onFailure(
+                call: Call<List<String>>,
+                t: Throwable
+            ) {
+                Toast.makeText(context, "???" + t.message, Toast.LENGTH_SHORT).show()
+                Log.e("???", t.message!!);
+            }
+        })
+    }
+
+    private fun getAiQuestions()
+    {
+        val message = Message("system", "Сгенирируй $questionsLen интересных вопросов по теме \"$gameName\". Ответ должен быть возвращен в формате валидного json-массива  размером $questionsLen. Каждый элемент которого выглядит так: {\n" +
                 "    \"question\": \"Содержание вопроса\",\n" +
                 "    \"answers\": [\"Ответ 0\", \"Ответ 1\", \"Ответ 2\", \"Ответ 3\"],\n" +
                 "    \"correctAnswerIndex\": номер правильного ответа от 0 до 3 включительно\n" +
@@ -105,6 +159,8 @@ class GameFragment : Fragment() {
             }
         })
     }
+
+
     var questionsCall: Call<ChatResponse>? = null
 
     override fun onDestroy() {

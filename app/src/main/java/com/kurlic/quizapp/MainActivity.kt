@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import com.kurlic.quizapp.gpt.CallGPT
+import com.kurlic.quizapp.server.CallServer
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -33,6 +34,14 @@ class MainActivity : AppCompatActivity() {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
             return retrofit.create(CallGPT::class.java)
+        }
+        fun createServerApi() : CallServer
+        {
+            val retrofit = Retrofit.Builder()
+                .baseUrl("http://192.168.10.102:8080/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
+            return retrofit.create(CallServer::class.java)
         }
     }
 }
