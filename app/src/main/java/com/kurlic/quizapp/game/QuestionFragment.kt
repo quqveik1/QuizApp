@@ -14,15 +14,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.kurlic.quizapp.R
+import com.kurlic.quizapp.common.loadImage
 
 @Suppress("DEPRECATION")
 class QuestionFragment : Fragment() {
 
     private lateinit var question: QuizQuestion
+    private lateinit var questionImage: ImageView
 
     companion object
     {
@@ -57,6 +60,10 @@ class QuestionFragment : Fragment() {
         questionTextView.text = question.question
 
         setButtons()
+
+        questionImage = rootview.findViewById(R.id.questionImage)
+
+        loadImage((parentFragment as GameFragment).gameData.gameTheme, requireContext(), questionImage)
 
         return rootview
     }

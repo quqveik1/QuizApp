@@ -13,9 +13,11 @@ import androidx.navigation.fragment.findNavController
 import com.google.gson.Gson
 import com.kurlic.quizapp.MainActivity
 import com.kurlic.quizapp.R
+import com.kurlic.quizapp.common.loadImage
 import com.kurlic.quizapp.gpt.ChatRequest
 import com.kurlic.quizapp.gpt.ChatResponse
 import com.kurlic.quizapp.gpt.Message
+import com.kurlic.quizapp.server.CallServer
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -31,6 +33,7 @@ class GameFragment : Fragment() {
     lateinit var gameData: GameData
 
     var questionsProgressBar: ProgressBar? = null
+    var dataLoadProgressBar: ProgressBar? = null
 
     override fun onCreate(savedInstanceState: Bundle?)
     {
@@ -44,6 +47,7 @@ class GameFragment : Fragment() {
         val rootview = inflater.inflate(R.layout.game_fragment, container, false)
 
         questionsProgressBar = rootview.findViewById(R.id.questionsProgressBar)
+        dataLoadProgressBar = rootview.findViewById(R.id.dataLoadProgressBar)
 
         loadName(rootview)
 
@@ -94,8 +98,14 @@ class GameFragment : Fragment() {
         }
         else
         {
+            startLoad()
             getQuestions()
         }
+    }
+
+    private fun startLoad()
+    {
+        dataLoadProgressBar?.visibility = View.VISIBLE
     }
 
     private fun getQuestions()
@@ -103,11 +113,12 @@ class GameFragment : Fragment() {
         getServerQuestions()
     }
 
+    var serverCall: Call<List<String>>? = null
     private fun getServerQuestions()
     {
-        val call = MainActivity.createServerApi().getDefaultQuestions(gameData.gameTheme, gameData.questionsLen)
+        serverCall = MainActivity.createServerApi().getDefaultQuestions(gameData.gameTheme, gameData.questionsLen)
 
-        call.enqueue(object : Callback<List<String>>{
+        serverCall!!.enqueue(object : Callback<List<String>>{
             override fun onResponse(
                 call: Call<List<String>>,
                 response: Response<List<String>>
@@ -116,8 +127,7 @@ class GameFragment : Fragment() {
                 if(!response.isSuccessful)
                 {
                     getServerQuestions()
-                    Toast.makeText(context, "???" + response.message(), Toast.LENGTH_SHORT).show()
-                    Log.e("???", response.message()!!);
+                    Log.e("Questions", response.message());
                     return
                 }
 
@@ -145,8 +155,8 @@ class GameFragment : Fragment() {
                 call: Call<List<String>>,
                 t: Throwable
             ) {
-                Toast.makeText(context, "???" + t.message, Toast.LENGTH_SHORT).show()
-                Log.e("???", t.message!!);
+                Log.e("Questions", t.message!!);
+                getServerQuestions()
             }
         })
     }
@@ -192,9 +202,13 @@ class GameFragment : Fragment() {
         if (questionsCall?.isExecuted == false) {
             questionsCall?.cancel()
         }
+        if (serverCall?.isExecuted == false) {
+            serverCall?.cancel()
+        }
     }
 
     private fun startQuiz() {
+        dataLoadProgressBar?.visibility = View.INVISIBLE
         showActiveQuestion()
     }
 
@@ -223,7 +237,6 @@ class GameFragment : Fragment() {
             }
         })
 
-        // Замените контейнер вопроса на новый фрагмент вопроса.
         childFragmentManager.beginTransaction()
             .replace(R.id.questionsContainer, questionFragment)
             .commit()
