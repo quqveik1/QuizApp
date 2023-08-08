@@ -68,7 +68,7 @@ class QuestionFragment : Fragment() {
         return rootview
     }
 
-    private val answerDelay = 2000L
+    private val answerDelay = 500L
 
     private fun setButtons()
     {

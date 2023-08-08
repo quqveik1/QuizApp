@@ -4,6 +4,7 @@ plugins {
     id 'kotlin-parcelize'
 }
 
+
 android {
     namespace 'com.kurlic.quizapp'
     compileSdk 33

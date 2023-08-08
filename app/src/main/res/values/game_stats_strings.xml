@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="cRightAnswers">Amount of right answers:</string>
+    <string name="timeTaken">Time taken:</string>
+    <string name="returnBack">Return back</string>
+
+</resources>

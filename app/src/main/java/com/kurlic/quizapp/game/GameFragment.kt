@@ -1,6 +1,8 @@
 package com.kurlic.quizapp.game
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.SystemClock
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -148,57 +150,23 @@ class GameFragment : Fragment() {
                     gameData.questions.add(obj)
                 }
 
-                startQuiz()
+                createAndStartQuiz()
             }
 
             override fun onFailure(
                 call: Call<List<String>>,
-                t: Throwable
-            ) {
+                t: Throwable)
+            {
                 Log.e("Questions", t.message!!);
                 getServerQuestions()
             }
         })
     }
 
-    private fun getAiQuestions()
-    {
-        val message = Message("system", "Сгенирируй ${gameData.questionsLen} интересных вопросов по теме \"${gameData.gameTheme}\". Ответ должен быть возвращен в формате валидного json-массива  размером ${gameData.questionsLen}. Каждый элемент которого выглядит так: {\n" +
-                "    \"question\": \"Содержание вопроса\",\n" +
-                "    \"answers\": [\"Ответ 0\", \"Ответ 1\", \"Ответ 2\", \"Ответ 3\"],\n" +
-                "    \"correctAnswerIndex\": номер правильного ответа от 0 до 3 включительно\n" +
-                "  }")
-        val request = ChatRequest(listOf(message))
-        questionsCall = MainActivity.createApi().callGPT(request)
-
-        questionsCall?.enqueue(object : Callback<ChatResponse> {
-            override fun onResponse(
-                call: Call<ChatResponse>,
-                response: Response<ChatResponse>
-            ) {
-
-                Toast.makeText(context, "answer", Toast.LENGTH_SHORT).show()
-
-                deserialize(response.body()!!.choices[0].message.content)
-                startQuiz()
-            }
-
-            override fun onFailure(
-                call: Call<ChatResponse>,
-                t: Throwable
-            ) {
-                Toast.makeText(context, "???", Toast.LENGTH_SHORT).show()
-                getQuestions()
-            }
-        })
-    }
-
-
     var questionsCall: Call<ChatResponse>? = null
 
     override fun onDestroy() {
         super.onDestroy()
-        // Отменить запрос, если он все еще выполняется.
         if (questionsCall?.isExecuted == false) {
             questionsCall?.cancel()
         }
@@ -211,27 +179,40 @@ class GameFragment : Fragment() {
         dataLoadProgressBar?.visibility = View.INVISIBLE
         showActiveQuestion()
     }
+    private fun createQuiz() {
+        gameData.startTime = System.currentTimeMillis()
+    }
+    private fun createAndStartQuiz() {
+        createQuiz()
+        startQuiz()
+    }
 
     private fun showActiveQuestion() {
         val question = gameData.getActiveQuestion()
         setProgressBar()
 
-        // Создайте новый экземпляр фрагмента вопроса и передайте ему данные вопроса.
         val questionFragment = QuestionFragment().apply {
             arguments = Bundle().apply {
                 putParcelable(QuestionFragment.QUESTION_KEY, question)
             }
         }
 
-        // Установите слушатель ответов для этого вопроса.
-        questionFragment.questionAnswerCallBack = (object : QuestionAnswerCallBack {
-            override fun onQuestionAnswered(isRight: Boolean) {
+        questionFragment.questionAnswerCallBack = (object : QuestionAnswerCallBack
+        {
+            override fun onQuestionAnswered(isRight: Boolean)
+            {
+                if(isRight)
+                {
+                    gameData.rightAnswers++;
+                }
+
                 gameData.activeQuestion++
-                if (gameData.activeQuestion < gameData.questions.size) {
-                    // Если есть следующий вопрос, покажите его.
+                if (gameData.activeQuestion < gameData.questions.size)
+                {
                     showActiveQuestion()
-                } else {
-                    // Если больше нет вопросов, завершите игру.
+                }
+                else
+                {
                     endQuiz()
                 }
             }
@@ -250,7 +231,17 @@ class GameFragment : Fragment() {
     }
 
     private fun endQuiz() {
-        findNavController().popBackStack()
+
+        gameData.finishTime = System.currentTimeMillis()
+
+        val bundle = Bundle()
+
+        bundle.putParcelable(GameStatsFragment.gameDataKey, gameData)
+
+
+        requireActivity().runOnUiThread {
+            findNavController().navigate(R.id.action_GameFragment_to_GameStatsFragment, bundle)
+        }
     }
 
     private fun deserialize(string: String)

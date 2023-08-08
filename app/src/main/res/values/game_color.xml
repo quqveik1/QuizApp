@@ -2,4 +2,8 @@
 <resources>
     <color name="trueColor">#2E7D32</color>
     <color name="falseColor">#C62828</color>
+
+    <color name="goodResultColor">@color/trueColor</color>
+    <color name="midResultColor">#C1C628</color>
+    <color name="badResultColor">@color/falseColor</color>
 </resources>
