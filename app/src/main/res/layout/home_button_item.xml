@@ -20,6 +20,11 @@
         android:text="Text"
         android:textSize="40sp"
         android:layout_gravity="center"
-        android:gravity="center_horizontal"/>
+        android:gravity="center_horizontal"
+        android:textColor="@color/textColor"
+        android:shadowColor="@color/textShadowColor"
+        android:shadowDx="2"
+        android:shadowDy="2"
+        android:shadowRadius="1" />
 
 </androidx.cardview.widget.CardView>

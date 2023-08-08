@@ -42,7 +42,8 @@
             app:layout_constraintBottom_toBottomOf="@+id/innerUpperConstraintLayout"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:gravity="center_horizontal"/>
+            android:gravity="center_horizontal"
+            android:layout_margin="@dimen/button_margin"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <!-- Горизонтальная направляющая (Guideline) для разделения экрана на 2 части -->
