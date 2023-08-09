@@ -36,6 +36,7 @@ class GameFragment : Fragment() {
 
     var questionsProgressBar: ProgressBar? = null
     var dataLoadProgressBar: ProgressBar? = null
+    lateinit var longWaitTextView: TextView
 
     override fun onCreate(savedInstanceState: Bundle?)
     {
@@ -50,6 +51,7 @@ class GameFragment : Fragment() {
 
         questionsProgressBar = rootview.findViewById(R.id.questionsProgressBar)
         dataLoadProgressBar = rootview.findViewById(R.id.dataLoadProgressBar)
+        longWaitTextView = rootview.findViewById(R.id.longLoadTextView)
 
         loadName(rootview)
 
@@ -128,8 +130,7 @@ class GameFragment : Fragment() {
             {
                 if(!response.isSuccessful)
                 {
-                    getServerQuestions()
-                    Log.e("Questions", response.message());
+                    reconnect(response.message())
                     return
                 }
 
@@ -150,17 +151,35 @@ class GameFragment : Fragment() {
                     gameData.questions.add(obj)
                 }
 
-                createAndStartQuiz()
+                if(activity != null)
+                {
+                    requireActivity().runOnUiThread {
+                        createAndStartQuiz()
+                    }
+                }
             }
 
             override fun onFailure(
                 call: Call<List<String>>,
                 t: Throwable)
             {
-                Log.e("Questions", t.message!!);
-                getServerQuestions()
+                reconnect(t.message!!)
             }
         })
+    }
+
+    private fun reconnect(error: String)
+    {
+        Log.e("Questions", error)
+
+        if(longWaitTextView.visibility != View.VISIBLE)
+        {
+            requireActivity().runOnUiThread{
+                longWaitTextView.visibility = View.VISIBLE
+            }
+        }
+
+        getServerQuestions()
     }
 
     var questionsCall: Call<ChatResponse>? = null
@@ -177,6 +196,7 @@ class GameFragment : Fragment() {
 
     private fun startQuiz() {
         dataLoadProgressBar?.visibility = View.INVISIBLE
+        longWaitTextView.visibility = View.INVISIBLE
         showActiveQuestion()
     }
     private fun createQuiz() {

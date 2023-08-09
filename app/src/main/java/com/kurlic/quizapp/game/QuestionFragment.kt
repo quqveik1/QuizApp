@@ -78,7 +78,10 @@ class QuestionFragment : Fragment() {
             buttonList[i].setOnClickListener {
                 highlightButtons()
                 Handler(Looper.getMainLooper()).postDelayed({
-                    questionAnswerCallBack?.onQuestionAnswered(question.correctAnswerIndex == i)
+                    if(parentFragment != null)
+                    {
+                        questionAnswerCallBack?.onQuestionAnswered(question.correctAnswerIndex == i)
+                    }
                 }, answerDelay)}
         }
     }

@@ -3,5 +3,6 @@
     <string name="cRightAnswers">Amount of right answers:</string>
     <string name="timeTaken">Time taken:</string>
     <string name="returnBack">Return back</string>
+    <string name="waitLongLoad">Please wait just a minute, after there won\'t any loads</string>
 
 </resources>
