@@ -82,7 +82,7 @@ class GameStatsFragment : Fragment()
         val totalTime = gameData.finishTime - gameData.startTime
 
         val minutes = TimeUnit.MILLISECONDS.toMinutes(totalTime)
-        val seconds = TimeUnit.MILLISECONDS.toSeconds(totalTime)
+        val seconds = TimeUnit.MILLISECONDS.toSeconds(totalTime) % 60
 
         val timeStr = "$minutes:$seconds"
 

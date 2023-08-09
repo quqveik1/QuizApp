@@ -35,7 +35,8 @@ class MainActivity : AppCompatActivity() {
         fun createServerApi() : CallServer
         {
             val retrofit = Retrofit.Builder()
-                .baseUrl("http://192.168.10.102:8080/")
+                //.baseUrl("http://192.168.10.102:8080/")
+                .baseUrl("https://quiz-server-lbs9.onrender.com/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
             return retrofit.create(CallServer::class.java)

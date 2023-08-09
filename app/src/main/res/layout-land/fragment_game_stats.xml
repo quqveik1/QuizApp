@@ -1,47 +1,51 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:id="@+id/linearLayout"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:orientation="vertical"
-        android:gravity="center_horizontal">
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cardViewCorrectAnswers"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/button_margin"
             android:background="@drawable/button_standart_shape"
             app:cardCornerRadius="@dimen/main_radius"
             app:layout_constraintDimensionRatio="1:1">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:gravity="center_horizontal">
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/button_margin"
+                    android:gravity="center_horizontal"
                     android:text="@string/cRightAnswers"
-                    android:textSize="@dimen/button_text_size"
-                    android:gravity="center_horizontal"/>
+                    android:textSize="@dimen/button_text_size" />
 
                 <TextView
                     android:id="@+id/numberCorrectAnswersTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/button_margin"
+                    android:gravity="center_horizontal"
                     android:text="0/10"
-                    android:textSize="@dimen/big_text_size"
-                    android:gravity="center_horizontal"/>
+                    android:textSize="@dimen/big_text_size" />
 
                 <ProgressBar
                     android:id="@+id/correctAnswersProgressBar"
@@ -55,17 +59,18 @@
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cardViewTime"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
             android:layout_margin="@dimen/button_margin"
-            app:layout_constraintDimensionRatio="1:1"
             android:background="@drawable/button_standart_shape"
-            app:cardCornerRadius="@dimen/main_radius">
+            app:cardCornerRadius="@dimen/main_radius"
+            app:layout_constraintDimensionRatio="1:1">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:gravity="center_horizontal">
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -78,29 +83,32 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
-                <TextView
-                    android:id="@+id/timeTakenTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/button_margin"
-                    android:text="12:00"
-                    android:textSize="@dimen/big_text_size" />
-                <ImageView
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_margin="@dimen/button_margin"
-                    android:src="@drawable/timer" />
+                    <TextView
+                        android:id="@+id/timeTakenTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/button_margin"
+                        android:text="12:00"
+                        android:textSize="@dimen/big_text_size" />
+                    <ImageView
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_margin="@dimen/button_margin"
+                        android:src="@drawable/timer" />
                 </LinearLayout>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
-        <Button
-            android:id="@+id/returnHomeButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/button_margin"
-            android:text="@string/returnBack"
-            android:background="@drawable/button_standart_shape"/>
-
     </LinearLayout>
+
+    <Button
+        android:id="@+id/returnHomeButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/button_margin"
+        android:background="@drawable/button_standart_shape"
+        android:text="@string/returnBack"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 </androidx.constraintlayout.widget.ConstraintLayout>

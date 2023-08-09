@@ -8,4 +8,6 @@
     <color name="textShadowColor">@color/white</color>
     <color name="errorColor">#F44336</color>
     <color name="themeColor">#363FF4</color>
+
+    <color name="questionColor">#F43646</color>
 </resources>
