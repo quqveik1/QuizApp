@@ -1,5 +1,7 @@
 package com.kurlic.quizapp.game
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.Handler
 import android.os.SystemClock
@@ -11,6 +13,7 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.gson.Gson
 import com.kurlic.quizapp.MainActivity
@@ -20,6 +23,10 @@ import com.kurlic.quizapp.gpt.ChatRequest
 import com.kurlic.quizapp.gpt.ChatResponse
 import com.kurlic.quizapp.gpt.Message
 import com.kurlic.quizapp.server.CallServer
+import com.kurlic.quizapp.stats.UserStats
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -118,6 +125,7 @@ class GameFragment : Fragment() {
     }
 
     var serverCall: Call<List<String>>? = null
+    private var shouldReconnect = true
     private fun getServerQuestions()
     {
         serverCall = MainActivity.createServerApi().getDefaultQuestions(gameData.gameTheme, gameData.questionsLen)
@@ -170,12 +178,16 @@ class GameFragment : Fragment() {
 
     private fun reconnect(error: String)
     {
+        if(!shouldReconnect) return
         Log.e("Questions", error)
 
         if(longWaitTextView.visibility != View.VISIBLE)
         {
-            requireActivity().runOnUiThread{
-                longWaitTextView.visibility = View.VISIBLE
+            if(activity != null)
+            {
+                requireActivity().runOnUiThread {
+                    longWaitTextView.visibility = View.VISIBLE
+                }
             }
         }
 
@@ -186,12 +198,9 @@ class GameFragment : Fragment() {
 
     override fun onDestroy() {
         super.onDestroy()
-        if (questionsCall?.isExecuted == false) {
-            questionsCall?.cancel()
-        }
-        if (serverCall?.isExecuted == false) {
-            serverCall?.cancel()
-        }
+        questionsCall?.cancel()
+        serverCall?.cancel()
+        shouldReconnect = false
     }
 
     private fun startQuiz() {
@@ -257,6 +266,27 @@ class GameFragment : Fragment() {
         val bundle = Bundle()
 
         bundle.putParcelable(GameStatsFragment.gameDataKey, gameData)
+
+        lifecycleScope.launch(Dispatchers.IO)
+        {
+            val sharedPrefs = requireActivity().getSharedPreferences(UserStats.statsKey, Context.MODE_PRIVATE)
+            val gson = Gson()
+
+            val userStatsJson = sharedPrefs.getString(UserStats.statsKey, null)
+            val userStats = if (userStatsJson != null)
+            {
+                gson.fromJson(userStatsJson, UserStats::class.java)
+            } else
+            {
+                UserStats()
+            }
+
+            userStats.addNewGame(gameData)
+
+            val editor = sharedPrefs.edit()
+            editor.putString(UserStats.statsKey, gson.toJson(userStats))
+            editor.apply()
+        }
 
 
         requireActivity().runOnUiThread {

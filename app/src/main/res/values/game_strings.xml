@@ -3,6 +3,13 @@
     <string name="cRightAnswers">Amount of right answers:</string>
     <string name="timeTaken">Time taken:</string>
     <string name="returnBack">Return back</string>
-    <string name="waitLongLoad">Please wait just a minute, after there won\'t any loads</string>
+    <string name="waitLongLoad">Please wait just a minute, after there won\'t any loads. (You can exit the application for now, the loading will continue.)</string>
+    <string name="completedQuestions">Completed questions:</string>
+    <string name="rightAnswersPercentage">Right answers percentage:</string>
+    <string name="timeSpent">Time spent:</string>
+    <string name="mostPopularThemes">Most popular themes</string>
+    <string name="play">Play</string>
+    <string name="statistic">Statistic</string>
+    <string name="welcome">Welcome to the game!</string>
 
 </resources>

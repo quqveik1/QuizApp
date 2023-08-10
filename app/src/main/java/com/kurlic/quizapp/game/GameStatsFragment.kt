@@ -12,6 +12,8 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
 import com.kurlic.quizapp.R
+import com.kurlic.quizapp.common.setTextViewPercentColor
+import com.kurlic.quizapp.common.setTimeToView
 import java.util.concurrent.TimeUnit
 
 class GameStatsFragment : Fragment()
@@ -58,18 +60,7 @@ class GameStatsFragment : Fragment()
         correctAnswersTextView.text = gameData.rightAnswers.toString() + "/" + gameData.questionsLen.toString()
         val percents = gameData.rightAnswers.toFloat() / gameData.questionsLen.toFloat()
 
-        if(percents <= 0.33)
-        {
-            correctAnswersTextView.setTextColor(ContextCompat.getColor(requireContext(), R.color.badResultColor))
-        }
-        else if(percents > 0.33 && percents < 0.66)
-        {
-            correctAnswersTextView.setTextColor(ContextCompat.getColor(requireContext(), R.color.midResultColor))
-        }
-        else if(percents > 0.66)
-        {
-            correctAnswersTextView.setTextColor(ContextCompat.getColor(requireContext(), R.color.goodResultColor))
-        }
+        setTextViewPercentColor(percents, correctAnswersTextView, requireContext())
 
         correctAnswersProgressBar.max = gameData.questionsLen
         correctAnswersProgressBar.progress = gameData.rightAnswers
@@ -77,16 +68,13 @@ class GameStatsFragment : Fragment()
 
     private fun setTakenTime(view: View)
     {
+
+
         val timeTakenTextView: TextView = view.findViewById(R.id.timeTakenTextView)
 
         val totalTime = gameData.finishTime - gameData.startTime
 
-        val minutes = TimeUnit.MILLISECONDS.toMinutes(totalTime)
-        val seconds = TimeUnit.MILLISECONDS.toSeconds(totalTime) % 60
-
-        val timeStr = "$minutes:$seconds"
-
-        timeTakenTextView.text = timeStr
+        setTimeToView(timeTakenTextView, totalTime)
     }
 
     private fun loadGameData(savedInstanceState: Bundle?)

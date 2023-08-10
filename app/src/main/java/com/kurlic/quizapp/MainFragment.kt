@@ -27,5 +27,10 @@ class MainFragment : Fragment()
         playButton.setOnClickListener {
             findNavController().navigate(R.id.action_MainFragment_to_HomeFragment)
         }
+
+        val statsButton = view.findViewById<Button>(R.id.userStatisticsButton)
+        statsButton.setOnClickListener {
+            findNavController().navigate(R.id.action_MainFragment_to_UserStatsFragment)
+        }
     }
 }

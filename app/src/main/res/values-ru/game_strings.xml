@@ -3,5 +3,12 @@
     <string name="cRightAnswers">Правильных ответов:</string>
     <string name="timeTaken">Времени заняло:</string>
     <string name="returnBack">Вернуться назад</string>
-    <string name="waitLongLoad">Пожалуйста, подождите минуту. Потом таких долгих загрузок не будет.</string>
+    <string name="waitLongLoad">Пожалуйста, подождите минуту. Потом таких долгих загрузок не будет. (Можете выйти из приложения на это время, загрузка продолжиться)</string>
+    <string name="completedQuestions">Пройдено вопросов:</string>
+    <string name="rightAnswersPercentage">Процент правильных ответов:</string>
+    <string name="timeSpent">Потрачено времени:</string>
+    <string name="mostPopularThemes">Самые популярные у вас темы</string>
+    <string name="play">Играть</string>
+    <string name="statistic">Статистика</string>
+    <string name="welcome">Добро пожаловать!</string>
 </resources>
