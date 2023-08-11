@@ -18,7 +18,7 @@ class HomeButtonItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
         buttonText.text = text
 
-        loadImage(text, itemView.context, buttonImage)
+        loadImage(text, itemView.context, buttonImage, true)
 
         itemView.setOnClickListener {
             val bData = Bundle()

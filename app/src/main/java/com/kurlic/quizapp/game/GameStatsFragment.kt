@@ -1,6 +1,7 @@
 package com.kurlic.quizapp.game
 
 import android.content.Context
+import android.media.MediaPlayer
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -24,6 +25,24 @@ class GameStatsFragment : Fragment()
     }
 
     private lateinit var gameData: GameData
+
+    override fun onCreate(savedInstanceState: Bundle?)
+    {
+        super.onCreate(savedInstanceState)
+
+        loadAndPlayWinSound(savedInstanceState)
+    }
+
+    private fun loadAndPlayWinSound(savedInstanceState: Bundle?)
+    {
+        if(savedInstanceState == null)
+        {
+            val player = MediaPlayer.create(requireContext(), R.raw.final_sound)
+            player.start()
+
+            player.setOnCompletionListener { it.release() }
+        }
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View?
     {
@@ -68,8 +87,6 @@ class GameStatsFragment : Fragment()
 
     private fun setTakenTime(view: View)
     {
-
-
         val timeTakenTextView: TextView = view.findViewById(R.id.timeTakenTextView)
 
         val totalTime = gameData.finishTime - gameData.startTime

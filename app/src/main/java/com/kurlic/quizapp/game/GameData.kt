@@ -8,7 +8,7 @@ import java.io.Serializable
 class GameData : Serializable, Parcelable
 {
     var gameTheme = ""
-    val questionsLen = 10
+    val questionsLen = 2
     var activeQuestion = 0
     var rightAnswers = 0
 

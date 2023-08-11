@@ -11,4 +11,6 @@
     <string name="play">Играть</string>
     <string name="statistic">Статистика</string>
     <string name="welcome">Добро пожаловать!</string>
+
+    <string name="emptyThemeQuestionsList">К сожалению на сервере не нашлось вопросов по этой теме</string>
 </resources>

@@ -1,9 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <style name="button_standart_shape_apeareance" parent="">
+        <item name="cornerFamily">rounded</item> <!-- Для срезанных углов -->
+        <item name="cornerSize">@dimen/main_radius</item>
+    </style>
+
     <style name="button_style" parent="Widget.Material3.Button">
         <item name="android:textSize">@dimen/button_text_size</item>
         <item name="android:textAllCaps">false</item>
         <item name="android:textColor">@color/textColor</item>
+        <item name="android:padding">@dimen/button_padding</item>
+        <item name="shapeAppearance">@style/button_standart_shape_apeareance</item>
     </style>
 
     <style name="MaterialFalseColor" parent="Widget.Material3.Button">

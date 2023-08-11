@@ -20,5 +20,15 @@ val categoryTranslations = mapOf(
     "Биология" to "Biology",
     "Астрономия" to "Astronomy",
     "Технологии" to "Technology",
-    "Архитектура" to "Architecture"
+    "Архитектура" to "Architecture",
+    "Аниме" to "Anime",
+    "Футбол" to "Football",
+    "Баскетбол" to "Basketball",
+)
+
+val ThemeListOf5Pics = listOf<String>(
+    "football",
+    "anime",
+    "basketball",
+    "cinema"
 )

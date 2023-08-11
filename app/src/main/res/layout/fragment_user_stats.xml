@@ -90,7 +90,9 @@
                         style="?android:attr/progressBarStyleHorizontal"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/button_margin" />
+                        android:layout_margin="@dimen/button_margin"
+                        android:progressBackgroundTint="@color/secondColor"
+                        android:progressTint="@color/textColor"/>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 

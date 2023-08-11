@@ -6,6 +6,8 @@ import android.graphics.BlendModeColorFilter
 import android.graphics.Color
 import android.graphics.PorterDuff
 import android.graphics.drawable.GradientDrawable
+import android.media.MediaPlayer
+import android.media.SoundPool
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
@@ -36,8 +38,7 @@ class QuestionFragment : Fragment() {
         super.onCreate(savedInstanceState)
         if(arguments != null)
         {
-            question =
-                requireArguments().getParcelable(QUESTION_KEY)!!
+            question = requireArguments().getParcelable(QUESTION_KEY)!!
         }
     }
 
@@ -69,20 +70,37 @@ class QuestionFragment : Fragment() {
     }
 
     private val answerDelay = 500L
-
+    private var isAnswerGiven = false
     private fun setButtons()
     {
         for (i in 0 until buttonList.size)
         {
             buttonList[i].text = question.answers[i]
+            var isCorrect = question.correctAnswerIndex == i
             buttonList[i].setOnClickListener {
-                highlightButtons()
-                Handler(Looper.getMainLooper()).postDelayed({
-                    if(parentFragment != null)
-                    {
-                        questionAnswerCallBack?.onQuestionAnswered(question.correctAnswerIndex == i)
-                    }
-                }, answerDelay)}
+                if(!isAnswerGiven)
+                {
+                    isAnswerGiven = true
+
+                    highlightButtons()
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        if (parentFragment != null)
+                        {
+                            questionAnswerCallBack?.onQuestionAnswered(isCorrect)
+                        }
+                    }, answerDelay)
+
+                    playSound(isCorrect)
+                }
+            }
+        }
+    }
+
+    private fun playSound(isRight: Boolean)
+    {
+        if(parentFragment != null)
+        {
+            (parentFragment as GameFragment).playSound(isRight)
         }
     }
 
@@ -95,8 +113,6 @@ class QuestionFragment : Fragment() {
 
             val colorStateList = ColorStateList.valueOf(color)
             buttonList[i].backgroundTintList = colorStateList
-
-
         }
     }
 

@@ -1,10 +1,13 @@
 package com.kurlic.quizapp.common
 
 import android.content.Context
+import android.icu.text.SimpleDateFormat
 import android.view.View
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import com.kurlic.quizapp.R
+import java.util.Date
+import java.util.Locale
 import java.util.concurrent.TimeUnit
 
 fun setTextViewPercentColor(percents: Float, textView: TextView, context: Context)
@@ -25,10 +28,8 @@ fun setTextViewPercentColor(percents: Float, textView: TextView, context: Contex
 
 fun setTimeToView(textView: TextView, totalTime: Long)
 {
-    val minutes = TimeUnit.MILLISECONDS.toMinutes(totalTime)
-    val seconds = TimeUnit.MILLISECONDS.toSeconds(totalTime) % 60
-
-    val timeStr = "$minutes:$seconds"
+    val format = SimpleDateFormat("mm:ss", Locale.getDefault())
+    val timeStr = format.format(Date(totalTime))
 
     textView.text = timeStr
 }

@@ -2,6 +2,8 @@ package com.kurlic.quizapp.game
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.media.MediaPlayer
+import android.media.SoundPool
 import android.os.Bundle
 import android.os.Handler
 import android.os.SystemClock
@@ -12,6 +14,7 @@ import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -48,7 +51,29 @@ class GameFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?)
     {
         loadGameData(savedInstanceState)
+        loadSounds()
         super.onCreate(savedInstanceState)
+    }
+
+    private lateinit var soundPool: SoundPool
+    private var soundIdCorrect: Int = 0
+    private var soundIdWrong: Int = 0
+    private fun loadSounds()
+    {
+        soundPool = SoundPool.Builder().setMaxStreams(2).build()
+
+        // Загрузите звуки
+        soundIdCorrect = soundPool.load(requireContext(), R.raw.true_sound, 1)
+        soundIdWrong = soundPool.load(requireContext(), R.raw.false_sound, 1)
+    }
+
+    fun playSound(isRight: Boolean)
+    {
+        if (isRight) {
+            soundPool.play(soundIdCorrect, 1.0f, 1.0f, 0, 0, 1.0f)
+        } else {
+            soundPool.play(soundIdWrong, 1.0f, 1.0f, 0, 0, 1.0f)
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -152,6 +177,15 @@ class GameFragment : Fragment() {
 
                 val gson = Gson()
 
+                if(list.isEmpty())
+                {
+                    if(context != null)
+                    {
+                        Toast.makeText(requireContext(), getString(R.string.emptyThemeQuestionsList), Toast.LENGTH_LONG).show()
+                        findNavController().popBackStack()
+                    }
+                }
+
                 for(s in list)
                 {
                     val obj = gson.fromJson(s, QuizQuestion::class.java)
@@ -201,6 +235,8 @@ class GameFragment : Fragment() {
         questionsCall?.cancel()
         serverCall?.cancel()
         shouldReconnect = false
+
+        soundPool.release()
     }
 
     private fun startQuiz() {
@@ -230,9 +266,12 @@ class GameFragment : Fragment() {
         {
             override fun onQuestionAnswered(isRight: Boolean)
             {
+                if(context == null) return
+
+                val player: MediaPlayer
                 if(isRight)
                 {
-                    gameData.rightAnswers++;
+                    gameData.rightAnswers++
                 }
 
                 gameData.activeQuestion++
