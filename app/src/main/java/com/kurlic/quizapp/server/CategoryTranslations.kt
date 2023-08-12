@@ -26,9 +26,15 @@ val categoryTranslations = mapOf(
     "Баскетбол" to "Basketball",
 )
 
-val ThemeListOf5Pics = listOf<String>(
-    "football",
-    "anime",
-    "basketball",
-    "cinema"
+val ThemesPicsNumMap = mapOf<String, Int>(
+    "football" to 5,
+    "anime" to 5,
+    "basketball" to 5,
+    "cinema" to 5,
+    "sport" to 5,
+    "music" to 5,
+    "history" to 5,
+    "computergames" to 5,
+    "literature" to 5,
+    "psychology" to 5,
 )

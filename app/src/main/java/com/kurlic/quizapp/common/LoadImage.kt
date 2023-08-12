@@ -3,30 +3,36 @@ package com.kurlic.quizapp.common
 import android.content.Context
 import android.widget.ImageView
 import com.bumptech.glide.Glide
-import com.kurlic.quizapp.server.ThemeListOf5Pics
+import com.kurlic.quizapp.server.ThemesPicsNumMap
 import com.kurlic.quizapp.server.categoryTranslations
 import java.util.Locale
-import kotlin.random.Random
 
 fun getImageResource(category: String, context: Context, needStaticElement: Boolean = false): Int {
 
     val translatedText = categoryTranslations[category] ?: category
     var resourceName = translatedText.lowercase(Locale.ENGLISH)
 
-    val hasMultiPics: Boolean = if(needStaticElement)
+    var iconMaxIndex = 1
+
+    val hasMultiPics: Boolean
+    if(needStaticElement)
     {
-        false
+        hasMultiPics = false
     }
     else
     {
-        ThemeListOf5Pics.contains(resourceName)
+        hasMultiPics = ThemesPicsNumMap.contains(resourceName)
+        if(hasMultiPics)
+        {
+            iconMaxIndex = ThemesPicsNumMap[resourceName]!!
+        }
     }
 
     resourceName += "_icon"
 
     if(hasMultiPics)
     {
-        val num = (0..4).random()
+        val num = (0 until iconMaxIndex).random()
 
         resourceName += "_" + num.toString()
     }
