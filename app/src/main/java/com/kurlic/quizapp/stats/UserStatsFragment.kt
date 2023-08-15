@@ -20,44 +20,70 @@ class UserStatsFragment : Fragment()
 
     lateinit var userStats: UserStats
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View?
-    {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    ): View? {
         val root = inflater.inflate(R.layout.fragment_user_stats, container, false)
 
+        userStats = loadUserStats()
+
+        setUpCompletedQuestions(root)
+        setUpCompletedRightQuestions(root)
+        setUpProgressBar(root)
+        setUpTotalTimeSpent(root)
+        setUpPopularThemes(root)
+
+        return root
+    }
+
+    private fun loadUserStats(): UserStats {
         val sharedPrefs = requireActivity().getSharedPreferences(UserStats.statsKey, Context.MODE_PRIVATE)
         val userStatsJson = sharedPrefs.getString(UserStats.statsKey, null)
         val gson = Gson()
 
-        userStats = if (userStatsJson != null)
-        {
+        return if (userStatsJson != null) {
             gson.fromJson(userStatsJson, UserStats::class.java)
-        }
-        else
-        {
+        } else {
             UserStats()
         }
+    }
 
+    private fun setUpCompletedQuestions(root: View) {
         val completedQuestions = root.findViewById<TextView>(R.id.totalNumberAnswersTextView)
         completedQuestions.text = userStats.completedQuestions.toString()
+    }
 
+    private fun setUpCompletedRightQuestions(root: View) {
         val completedRightQuestions = root.findViewById<TextView>(R.id.totalPercentageCorrectAnswersTextView)
-        val percentage = ((userStats.completedRightQuestions.toFloat() / userStats.completedQuestions))
+        val percentage = calculatePercentage()
         completedRightQuestions.text = String.format("%.1f", percentage * 100) + "%"
         setTextViewPercentColor(percentage, completedRightQuestions, requireContext())
+    }
 
+    private fun calculatePercentage(): Float {
+        return if (userStats.completedQuestions > 0) {
+            (userStats.completedRightQuestions.toFloat() / userStats.completedQuestions)
+        } else {
+            0F
+        }
+    }
+
+    private fun setUpProgressBar(root: View) {
         val bar = root.findViewById<ProgressBar>(R.id.percentageCorrectAnswersProgressBar)
         bar.max = userStats.completedQuestions
         bar.progress = userStats.completedRightQuestions
+    }
 
+    private fun setUpTotalTimeSpent(root: View) {
         val totalTimeSpent = root.findViewById<TextView>(R.id.totalTimeSpentTextView)
         setTimeToView(totalTimeSpent, userStats.totalTime)
+    }
 
+    private fun setUpPopularThemes(root: View) {
         val listThemes = userStats.themesQuestionsMap.toList().sortedByDescending { it.second }
         val recyclerView = root.findViewById<RecyclerView>(R.id.popularThemesRecyclerView)
         recyclerView.adapter = PopularThemesAdapter(listThemes)
-
-        return root
     }
+
 
 }

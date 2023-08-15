@@ -37,4 +37,12 @@ val ThemesPicsNumMap = mapOf<String, Int>(
     "computergames" to 5,
     "literature" to 5,
     "psychology" to 5,
+    "art" to 5,
+    "geography" to 5,
+    "technology" to 5,
+    "automobiles" to 5,
+    "physics" to 5,
+    "mathematics" to 5,
+    "biology" to 5,
+    "architecture" to 5,
 )
