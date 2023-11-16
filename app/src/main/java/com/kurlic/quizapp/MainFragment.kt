@@ -9,18 +9,12 @@ import android.widget.Button
 import androidx.navigation.fragment.findNavController
 
 
-class MainFragment : Fragment()
-{
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View?
-    {
-        // Inflate the layout for this fragment
+class MainFragment : Fragment() {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_main, container, false)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?
-    )
-    {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         val playButton = view.findViewById<Button>(R.id.playButton)

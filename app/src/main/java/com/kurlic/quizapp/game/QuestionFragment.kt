@@ -23,21 +23,18 @@ import androidx.fragment.app.Fragment
 import com.kurlic.quizapp.R
 import com.kurlic.quizapp.common.loadImage
 
-@Suppress("DEPRECATION")
-class QuestionFragment : Fragment() {
+@Suppress("DEPRECATION") class QuestionFragment : Fragment() {
 
     private lateinit var question: QuizQuestion
     private lateinit var questionImage: ImageView
 
-    companion object
-    {
+    companion object {
         val QUESTION_KEY = "QUESTION_KEY"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if(arguments != null)
-        {
+        if (arguments != null) {
             question = requireArguments().getParcelable(QUESTION_KEY)!!
         }
     }
@@ -71,21 +68,17 @@ class QuestionFragment : Fragment() {
 
     private val answerDelay = 1000L
     private var isAnswerGiven = false
-    private fun setButtons()
-    {
-        for (i in 0 until buttonList.size)
-        {
+    private fun setButtons() {
+        for (i in 0 until buttonList.size) {
             buttonList[i].text = question.answers[i]
             var isCorrect = question.correctAnswerIndex == i
             buttonList[i].setOnClickListener {
-                if(!isAnswerGiven)
-                {
+                if (!isAnswerGiven) {
                     isAnswerGiven = true
 
                     highlightButtons()
                     Handler(Looper.getMainLooper()).postDelayed({
-                        if (parentFragment != null)
-                        {
+                        if (parentFragment != null) {
                             questionAnswerCallBack?.onQuestionAnswered(isCorrect)
                         }
                     }, answerDelay)
@@ -96,19 +89,15 @@ class QuestionFragment : Fragment() {
         }
     }
 
-    private fun playSound(isRight: Boolean)
-    {
-        if(parentFragment != null)
-        {
+    private fun playSound(isRight: Boolean) {
+        if (parentFragment != null) {
             (parentFragment as GameFragment).playSound(isRight)
         }
     }
 
-    private fun highlightButtons()
-    {
-        for (i in 0 until buttonList.size)
-        {
-            val colorResource = if(question.correctAnswerIndex == i) R.color.trueColor else R.color.falseColor
+    private fun highlightButtons() {
+        for (i in 0 until buttonList.size) {
+            val colorResource = if (question.correctAnswerIndex == i) R.color.trueColor else R.color.falseColor
             val color = ContextCompat.getColor(requireContext(), colorResource)
 
             val colorStateList = ColorStateList.valueOf(color)

@@ -37,8 +37,7 @@ import retrofit2.Response
 class GameFragment : Fragment() {
 
     companion object {
-        val NAMEKEY =
-            "NameKey"
+        val NAMEKEY = "NameKey"
     }
 
     val gameDataKey = "GDK"
@@ -48,8 +47,7 @@ class GameFragment : Fragment() {
     var dataLoadProgressBar: ProgressBar? = null
     lateinit var longWaitTextView: TextView
 
-    override fun onCreate(savedInstanceState: Bundle?)
-    {
+    override fun onCreate(savedInstanceState: Bundle?) {
         loadGameData(savedInstanceState)
         loadSounds()
         super.onCreate(savedInstanceState)
@@ -58,8 +56,7 @@ class GameFragment : Fragment() {
     private lateinit var soundPool: SoundPool
     private var soundIdCorrect: Int = 0
     private var soundIdWrong: Int = 0
-    private fun loadSounds()
-    {
+    private fun loadSounds() {
         soundPool = SoundPool.Builder().setMaxStreams(2).build()
 
         // Загрузите звуки
@@ -67,8 +64,7 @@ class GameFragment : Fragment() {
         soundIdWrong = soundPool.load(requireContext(), R.raw.false_sound, 1)
     }
 
-    fun playSound(isRight: Boolean)
-    {
+    fun playSound(isRight: Boolean) {
         if (isRight) {
             soundPool.play(soundIdCorrect, 1.0f, 1.0f, 0, 0, 1.0f)
         } else {
@@ -76,8 +72,7 @@ class GameFragment : Fragment() {
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         val rootview = inflater.inflate(R.layout.game_fragment, container, false)
 
@@ -92,133 +87,102 @@ class GameFragment : Fragment() {
         return rootview
     }
 
-    override fun onSaveInstanceState(outState: Bundle)
-    {
+    override fun onSaveInstanceState(outState: Bundle) {
         saveGameData(outState)
         super.onSaveInstanceState(outState)
     }
 
-    private fun loadName(rootView: View)
-    {
+    private fun loadName(rootView: View) {
         val tv = rootView.findViewById<TextView>(R.id.quizName)
 
         tv.text = gameData.gameTheme
     }
 
-    private fun saveGameData(outState: Bundle)
-    {
+    private fun saveGameData(outState: Bundle) {
         outState.putParcelable(gameDataKey, gameData)
     }
 
-    private fun loadGameData(savedInstanceState: Bundle?)
-    {
-        if(savedInstanceState != null)
-        {
+    private fun loadGameData(savedInstanceState: Bundle?) {
+        if (savedInstanceState != null) {
             gameData = savedInstanceState.getParcelable(gameDataKey)!!
-        }
-        else
-        {
+        } else {
             gameData = GameData()
-            if(arguments != null)
-            {
+            if (arguments != null) {
                 gameData.gameTheme = requireArguments().getString(NAMEKEY, "");
             }
         }
     }
 
-    private fun loadQuestions()
-    {
-        if(gameData.questions.size == gameData.questionsLen)
-        {
+    private fun loadQuestions() {
+        if (gameData.questions.size == gameData.questionsLen) {
             startQuiz()
-        }
-        else
-        {
+        } else {
             startLoad()
             getQuestions()
         }
     }
 
-    private fun startLoad()
-    {
+    private fun startLoad() {
         dataLoadProgressBar?.visibility = View.VISIBLE
     }
 
-    private fun getQuestions()
-    {
+    private fun getQuestions() {
         getServerQuestions()
     }
 
     var serverCall: Call<List<String>>? = null
     private var shouldReconnect = true
-    private fun getServerQuestions()
-    {
+    private fun getServerQuestions() {
         serverCall = MainActivity.createServerApi().getDefaultQuestions(gameData.gameTheme, gameData.questionsLen)
 
-        serverCall!!.enqueue(object : Callback<List<String>>{
-            override fun onResponse(
-                call: Call<List<String>>,
-                response: Response<List<String>>
-            )
-            {
-                if(!response.isSuccessful)
-                {
+        serverCall!!.enqueue(object : Callback<List<String>> {
+            override fun onResponse(call: Call<List<String>>, response: Response<List<String>>) {
+                if (!response.isSuccessful) {
                     reconnect(response.message())
                     return
                 }
 
                 val list = response.body()
 
-                if(list == null)
-                {
+                if (list == null) {
                     getServerQuestions()
                     return
                 }
 
                 val gson = Gson()
 
-                if(list.isEmpty())
-                {
-                    if(context != null)
-                    {
+                if (list.isEmpty()) {
+                    if (context != null) {
                         Toast.makeText(requireContext(), getString(R.string.emptyThemeQuestionsList), Toast.LENGTH_LONG).show()
                         findNavController().popBackStack()
                     }
                 }
 
-                for(s in list)
-                {
+                for (s in list) {
                     val obj = gson.fromJson(s, QuizQuestion::class.java)
 
                     gameData.questions.add(obj)
                 }
 
-                if(activity != null)
-                {
+                if (activity != null) {
                     requireActivity().runOnUiThread {
                         createAndStartQuiz()
                     }
                 }
             }
 
-            override fun onFailure(
-                call: Call<List<String>>,
-                t: Throwable)
-            {
+            override fun onFailure(call: Call<List<String>>, t: Throwable) {
                 reconnect(t.message!!)
             }
         })
     }
 
-    private fun reconnect(error: String)
-    {
-        if(!shouldReconnect) return
+    private fun reconnect(error: String) {
+        if (!shouldReconnect) return
         Log.e("Questions", error)
 
-        if(longWaitTextView.visibility != View.VISIBLE)
-        {
-            if(activity != null)
-            {
+        if (longWaitTextView.visibility != View.VISIBLE) {
+            if (activity != null) {
                 requireActivity().runOnUiThread {
                     longWaitTextView.visibility = View.VISIBLE
                 }
@@ -244,9 +208,11 @@ class GameFragment : Fragment() {
         longWaitTextView.visibility = View.INVISIBLE
         showActiveQuestion()
     }
+
     private fun createQuiz() {
         gameData.startTime = System.currentTimeMillis()
     }
+
     private fun createAndStartQuiz() {
         createQuiz()
         startQuiz()
@@ -262,39 +228,30 @@ class GameFragment : Fragment() {
             }
         }
 
-        questionFragment.questionAnswerCallBack = (object : QuestionAnswerCallBack
-        {
-            override fun onQuestionAnswered(isRight: Boolean)
-            {
-                if(context == null) return
+        questionFragment.questionAnswerCallBack = (object : QuestionAnswerCallBack {
+            override fun onQuestionAnswered(isRight: Boolean) {
+                if (context == null) return
 
                 val player: MediaPlayer
-                if(isRight)
-                {
+                if (isRight) {
                     gameData.rightAnswers++
                 }
 
                 gameData.activeQuestion++
-                if (gameData.activeQuestion < gameData.questions.size)
-                {
+                if (gameData.activeQuestion < gameData.questions.size) {
                     showActiveQuestion()
-                }
-                else
-                {
+                } else {
                     endQuiz()
                 }
             }
         })
 
-        childFragmentManager.beginTransaction()
-            .replace(R.id.questionsContainer, questionFragment)
-            .commit()
+        childFragmentManager.beginTransaction().replace(R.id.questionsContainer, questionFragment).commit()
     }
-    private fun setProgressBar()
-    {
-        if(questionsProgressBar != null)
-        {
-            questionsProgressBar!!.progress = ((gameData.activeQuestion.toFloat() / gameData.questionsLen.toFloat() ) * 100).toInt()
+
+    private fun setProgressBar() {
+        if (questionsProgressBar != null) {
+            questionsProgressBar!!.progress = ((gameData.activeQuestion.toFloat() / gameData.questionsLen.toFloat()) * 100).toInt()
         }
     }
 
@@ -306,17 +263,14 @@ class GameFragment : Fragment() {
 
         bundle.putParcelable(GameStatsFragment.gameDataKey, gameData)
 
-        lifecycleScope.launch(Dispatchers.IO)
-        {
+        lifecycleScope.launch(Dispatchers.IO) {
             val sharedPrefs = requireActivity().getSharedPreferences(UserStats.statsKey, Context.MODE_PRIVATE)
             val gson = Gson()
 
             val userStatsJson = sharedPrefs.getString(UserStats.statsKey, null)
-            val userStats = if (userStatsJson != null)
-            {
+            val userStats = if (userStatsJson != null) {
                 gson.fromJson(userStatsJson, UserStats::class.java)
-            } else
-            {
+            } else {
                 UserStats()
             }
 
@@ -333,8 +287,7 @@ class GameFragment : Fragment() {
         }
     }
 
-    private fun deserialize(string: String)
-    {
+    private fun deserialize(string: String) {
         val gson = Gson()
         val quizQuestionsArray = gson.fromJson(string, Array<QuizQuestion>::class.java)
 

@@ -17,26 +17,21 @@ import com.kurlic.quizapp.common.setTextViewPercentColor
 import com.kurlic.quizapp.common.setTimeToView
 import java.util.concurrent.TimeUnit
 
-class GameStatsFragment : Fragment()
-{
-    companion object
-    {
+class GameStatsFragment : Fragment() {
+    companion object {
         val gameDataKey = "GDK"
     }
 
     private lateinit var gameData: GameData
 
-    override fun onCreate(savedInstanceState: Bundle?)
-    {
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         loadAndPlayWinSound(savedInstanceState)
     }
 
-    private fun loadAndPlayWinSound(savedInstanceState: Bundle?)
-    {
-        if(savedInstanceState == null)
-        {
+    private fun loadAndPlayWinSound(savedInstanceState: Bundle?) {
+        if (savedInstanceState == null) {
             val player = MediaPlayer.create(requireContext(), R.raw.final_sound)
             player.start()
 
@@ -44,13 +39,11 @@ class GameStatsFragment : Fragment()
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View?
-    {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_game_stats, container, false)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?)
-    {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         loadGameData(savedInstanceState)
@@ -65,14 +58,12 @@ class GameStatsFragment : Fragment()
         }
     }
 
-    override fun onSaveInstanceState(outState: Bundle)
-    {
+    override fun onSaveInstanceState(outState: Bundle) {
         saveGameData(outState)
         super.onSaveInstanceState(outState)
     }
 
-    private fun setCorrectAnswers(view: View)
-    {
+    private fun setCorrectAnswers(view: View) {
         val correctAnswersTextView: TextView = view.findViewById(R.id.numberCorrectAnswersTextView)
         val correctAnswersProgressBar: ProgressBar = view.findViewById(R.id.correctAnswersProgressBar)
 
@@ -85,8 +76,7 @@ class GameStatsFragment : Fragment()
         correctAnswersProgressBar.progress = gameData.rightAnswers
     }
 
-    private fun setTakenTime(view: View)
-    {
+    private fun setTakenTime(view: View) {
         val timeTakenTextView: TextView = view.findViewById(R.id.timeTakenTextView)
 
         val totalTime = gameData.finishTime - gameData.startTime
@@ -94,23 +84,17 @@ class GameStatsFragment : Fragment()
         setTimeToView(timeTakenTextView, totalTime)
     }
 
-    private fun loadGameData(savedInstanceState: Bundle?)
-    {
-        if(savedInstanceState != null)
-        {
+    private fun loadGameData(savedInstanceState: Bundle?) {
+        if (savedInstanceState != null) {
             gameData = savedInstanceState.getParcelable(gameDataKey)!!
-        }
-        else
-        {
-            if(arguments != null)
-            {
+        } else {
+            if (arguments != null) {
                 gameData = requireArguments().getParcelable(gameDataKey) ?: GameData()
             }
         }
     }
 
-    private fun saveGameData(bundle: Bundle)
-    {
+    private fun saveGameData(bundle: Bundle) {
         bundle.putParcelable(gameDataKey, gameData)
     }
 }

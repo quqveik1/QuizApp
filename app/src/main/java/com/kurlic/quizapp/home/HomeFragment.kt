@@ -22,18 +22,13 @@ class HomeFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var viewAdapter: RecyclerView.Adapter<*>
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.home_fragment, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //generateNames()
         loadTopics()
 
 
@@ -43,37 +38,8 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun loadTopics()
-    {
+    private fun loadTopics() {
         val quizTopics = resources.getStringArray(R.array.quiz_topics).toList()
         viewAdapter = HomeButtonAdapter(quizTopics)
-    }
-
-    private fun generateNames() {
-        val message = Message("system", "I need 10 interesting quiz topics. Ответь на русском. Ответ это просто темы без нумерации разделенные по строкам. Нельзя ставить цифру в начале строки")
-        val request = ChatRequest(listOf(message))
-        val call = MainActivity.createApi().callGPT(request)
-
-        call.enqueue(object : Callback<ChatResponse> {
-            override fun onResponse(
-                call: Call<ChatResponse>,
-                response: Response<ChatResponse>
-            ) {
-                updateRecyclerView(response.body()!!.choices[0].message.content)
-            }
-
-            override fun onFailure(
-                call: Call<ChatResponse>,
-                t: Throwable
-            ) {
-                Toast.makeText(context, "???", Toast.LENGTH_SHORT).show()
-            }
-        })
-        }
-
-    private fun updateRecyclerView(topics: String?) {
-        val data = topics?.split("\n") ?: listOf()
-        // передать их в адаптер
-        (viewAdapter as HomeButtonAdapter).updateData(data)
     }
 }

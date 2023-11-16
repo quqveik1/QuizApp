@@ -4,10 +4,8 @@ import android.os.Parcelable
 import com.kurlic.quizapp.game.GameData
 import java.io.Serializable
 
-class UserStats : Serializable
-{
-    companion object
-    {
+class UserStats : Serializable {
+    companion object {
         const val statsKey = "STATSKEY"
     }
 
@@ -18,11 +16,10 @@ class UserStats : Serializable
 
     var themesQuestionsMap: MutableMap<String, Int> = mutableMapOf()
 
-    fun addNewGame(gameData: GameData)
-    {
-        totalTime               += gameData.finishTime - gameData.startTime
+    fun addNewGame(gameData: GameData) {
+        totalTime += gameData.finishTime - gameData.startTime
 
-        completedQuestions      += gameData.questionsLen
+        completedQuestions += gameData.questionsLen
         completedRightQuestions += gameData.rightAnswers
 
         val currentCount = themesQuestionsMap.getOrDefault(gameData.gameTheme, 0)

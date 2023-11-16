@@ -7,5 +7,5 @@ import retrofit2.http.Query
 interface CallServer {
 
     @GET("/getdefault")
-    fun getDefaultQuestions(@Query("theme") theme: String, @Query("len") len: Int) : Call<List<String>>
+    fun getDefaultQuestions(@Query("theme") theme: String, @Query("len") len: Int): Call<List<String>>
 }

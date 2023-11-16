@@ -15,14 +15,11 @@ import com.kurlic.quizapp.R
 import com.kurlic.quizapp.common.setTextViewPercentColor
 import com.kurlic.quizapp.common.setTimeToView
 
-class UserStatsFragment : Fragment()
-{
+class UserStatsFragment : Fragment() {
 
     lateinit var userStats: UserStats
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val root = inflater.inflate(R.layout.fragment_user_stats, container, false)
 
         userStats = loadUserStats()

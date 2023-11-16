@@ -15,40 +15,30 @@ fun getImageResource(category: String, context: Context, needStaticElement: Bool
     var iconMaxIndex = 1
 
     val hasMultiPics: Boolean
-    if(needStaticElement)
-    {
+    if (needStaticElement) {
         hasMultiPics = false
-    }
-    else
-    {
+    } else {
         hasMultiPics = ThemesPicsNumMap.contains(resourceName)
-        if(hasMultiPics)
-        {
+        if (hasMultiPics) {
             iconMaxIndex = ThemesPicsNumMap[resourceName]!!
         }
     }
 
     resourceName += "_icon"
 
-    if(hasMultiPics)
-    {
+    if (hasMultiPics) {
         val num = (0 until iconMaxIndex).random()
 
         resourceName += "_" + num.toString()
-    }
-    else
-    {
+    } else {
         resourceName += "_0"
     }
 
     return context.resources.getIdentifier(resourceName, "drawable", context.packageName)
 }
 
-fun loadImage(category: String, context: Context, imageView: ImageView, needStaticElement: Boolean = false)
-{
+fun loadImage(category: String, context: Context, imageView: ImageView, needStaticElement: Boolean = false) {
     val imageResource = getImageResource(category, context, needStaticElement)
-    Glide.with(context)
-        .load(imageResource)
-        .into(imageView)
+    Glide.with(context).load(imageResource).into(imageView)
 
 }

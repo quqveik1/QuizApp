@@ -18,8 +18,8 @@ class HomeButtonAdapter(private var data: List<String>) : RecyclerView.Adapter<H
     }
 
     override fun getItemCount(): Int = data.size
-    @SuppressLint("NotifyDataSetChanged")
-    fun updateData(newData: List<String>) {
+
+    @SuppressLint("NotifyDataSetChanged") fun updateData(newData: List<String>) {
         data = newData
         notifyDataSetChanged()
 
