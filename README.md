@@ -50,14 +50,18 @@
 
 ---
 # Используемые библиотеки 📚
-- Retorfit
-- Spring
-- Glide
-- GSON
+- `Retrofit`
+- `Spring`
+- `Glide`
+- `GSON`
 ----
 # Установка 📲
 1. Приложение рекомендуется установить через [Rustore](https://apps.rustore.ru/app/com.kurlic.quizapp) (там будет всегда последняя собранная версия)
 2. Также приложение можно установить через [GitHub](https://github.com/quqveik1/QuizApp/releases/latest)
+
+----
+- [EN](https://github.com/quqveik1/QuizApp/blob/main/README_EN.md)
+- [DE](https://github.com/quqveik1/QuizApp/blob/main/README_DE.md)
 
 
 
